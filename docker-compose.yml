@@ -1,0 +1,11 @@
+version: '2'
+services:
+  app:
+    build:
+      context: app
+
+  fluent:
+    build:
+      context: fluent
+    depends_on:
+      - app
