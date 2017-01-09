@@ -5,7 +5,7 @@ ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH
 
 USER root
 RUN apk --no-cache add sudo build-base ruby-dev && \
-    sudo -u fluent gem install fluent-plugin-elasticsearch fluent-plugin-record-reformer && \
+    sudo -u fluent gem install fluent-plugin-elasticsearch fluent-plugin-slack && \
     rm -rf /home/fluent/.gem/ruby/2.3.0/cache/*.gem && sudo -u fluent gem sources -c && \
     apk del sudo build-base ruby-dev
 

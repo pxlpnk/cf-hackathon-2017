@@ -83,12 +83,17 @@ def build_record(body)
    version: body["sys"]["version"] || body["sys"]["revision"] || -1,
    updatedAt: body["sys"]["updatedAt"],
    spaceId: extract_space(body),
+   entryId: extract_entry(body),
    rawPayload: body.to_json.to_s
   }
 end
 
 def extract_user(body)
   body["sys"]["updatedBy"] && body["sys"]["updatedBy"]["sys"]["id"]
+end
+
+def extract_entry(body)
+  body["sys"]["id"]
 end
 
 def extract_space(body)
