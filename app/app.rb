@@ -12,7 +12,7 @@ def fluent_host
 end
 
 def fluent_port
-  ENV["FLUENT_PORT"] || "localhost"
+  ENV["FLUENT_PORT"] || "24224"
 end
 
 post '/webhooks' do

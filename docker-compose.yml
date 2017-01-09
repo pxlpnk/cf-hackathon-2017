@@ -7,9 +7,13 @@ services:
       - ./app:/app
     ports:
       - "8002:8002"
+    environment:
+      - FLUENT_HOST=fluent
+    links:
+      - fluent
 
   fluent:
     build:
       context: fluent
-    depends_on:
-      - app
+    ports:
+      - "24224:24224"
