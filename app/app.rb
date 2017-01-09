@@ -57,9 +57,9 @@ def make_table
     tabelize_entry(entry)
   end.join('')
 
-  "<table>
+  "<table border=\"1\">
 <tr>
-<th>Updated At</th>
+<th>updated at</th>
 <th>space id</th>
 <th>entry id</th>
 <th>user</th>
