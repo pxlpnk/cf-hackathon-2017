@@ -52,6 +52,30 @@ get '/auditlog' do
   make_table
 end
 
+get '/auditlog/:key' do
+  entry = entry(params[:key])
+  make_entry_markup(entry)
+end
+
+
+def make_entry_markup(entry)
+  "<h1>Audit Record</h1>
+#{render_fields(entry)}
+"
+
+end
+
+def render_fields(entry)
+  entry.fields.map do |key, value|
+    "
+   <h2>#{key}</h2>
+<pre>
+   #{value}
+</pre>
+    "
+  end.join('')
+end
+
 def make_table
   table = entries.map do |entry|
     tabelize_entry(entry)
@@ -73,7 +97,7 @@ end
 def tabelize_entry(entry)
   "<tr>
 <td>
-#{entry.fields[:updatedAt]}
+#{link_to_entry(entry.sys[:id], entry.fields[:updatedAt])}
 </td>
 <td>
 #{entry.fields[:spaceId]}
@@ -175,6 +199,14 @@ def cda_client
                          access_token: ENV["CDA_TOKEN"],
                          space: ENV["SPACE_KEY"]
                         )
+end
+
+def entry(entry_id)
+  cda_client.entry(entry_id)
+end
+
+def link_to_entry(entry_id, text)
+  "<a href=\"/auditlog/#{entry_id}\" >#{text}</a>"
 end
 
 def entries
