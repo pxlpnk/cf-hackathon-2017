@@ -82,12 +82,17 @@ def build_record(body)
    user: extract_user(body),
    version: body["sys"]["version"] || body["sys"]["revision"] || -1,
    updatedAt: body["sys"]["updatedAt"],
-   # rawPayload: body.to_s
+   spaceId: extract_space(body),
+   rawPayload: body.to_json.to_s
   }
 end
 
 def extract_user(body)
   body["sys"]["updatedBy"] && body["sys"]["updatedBy"]["sys"]["id"]
+end
+
+def extract_space(body)
+  body["sys"]["space"] && body["sys"]["space"]["sys"]["id"]
 end
 
 def log_record(record)
@@ -97,4 +102,5 @@ end
 
 def create_entry(record)
   entry = cf_content_type.entries.create(record)
+  entry.publish
 end
