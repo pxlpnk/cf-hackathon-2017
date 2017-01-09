@@ -163,5 +163,5 @@ def cda_client
 end
 
 def entries
-  cda_client.entries(content_type: ENV["CONTENT_TYPE"])
+  cda_client.entries(content_type: ENV["CONTENT_TYPE"], order: "-fields.updatedAt")
 end
