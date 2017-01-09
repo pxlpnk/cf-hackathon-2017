@@ -1,12 +1,24 @@
 require 'sinatra'
 require "sinatra/reloader"
 require 'json'
+require 'fluent-logger'
+
+def fluent_tag
+  "contentful.webhook"
+end
+
+def fluent_host
+  ENV["FLUENT_HOST"] || "localhost"
+end
+
+def fluent_port
+  ENV["FLUENT_PORT"] || "localhost"
+end
 
 post '/webhooks' do
   body = parse_payload_body
   record = build_record(body)
-
-
+  log_record(record)
 end
 
 get '/' do
@@ -57,4 +69,9 @@ end
 
 def extract_user(body)
   body["sys"]["updatedBy"] && body["sys"]["updatedBy"]["sys"]["id"]
+end
+
+def log_record(record)
+  Fluent::Logger::FluentLogger.open(nil, :host=>fluent_host, :port=>fluent_port)
+  Fluent::Logger.post(fluent_tag, record)
 end
