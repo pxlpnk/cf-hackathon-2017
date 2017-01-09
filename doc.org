@@ -1,0 +1,22 @@
+
+* Info to be stored
+
+** X-Contentful-Topic (header)
+
+** created by, updated by if available
+
+** revision/version
+
+** updatedAt
+
+** raw body
+
+* data format
+
+{
+  topic: 'CF.auto_save', # WHAT
+  user: {UID, empty}, # WHO
+  version: {revision, version},
+  updated_at: updated_at, # WHEN
+  raw_json_body: raw_body
+}

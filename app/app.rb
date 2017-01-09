@@ -3,6 +3,9 @@ require "sinatra/reloader"
 require 'json'
 require 'fluent-logger'
 
+require 'contentful'
+require 'contentful/management'
+
 def fluent_tag
   "contentful.webhook"
 end
@@ -15,7 +18,7 @@ def fluent_port
   ENV["FLUENT_PORT"] || "24224"
 end
 
-require 'contentful/management'
+
 
 require 'dotenv'
 Dotenv.load
@@ -42,6 +45,48 @@ end
 
 get '/' do
   cowboy
+end
+
+get '/auditlog' do
+  make_table
+end
+
+def make_table
+  table = entries.map do |entry|
+    tabelize_entry(entry)
+  end.join('')
+
+  "<table>
+<tr>
+<th>Updated At</th>
+<th>space id</th>
+<th>entry id</th>
+<th>user</th>
+<th>topic</th>
+</tr>
+
+#{table}</table>"
+end
+
+
+def tabelize_entry(entry)
+  "<tr>
+<td>
+#{entry.fields[:updatedAt]}
+</td>
+<td>
+#{entry.fields[:spaceId]}
+</td>
+<td>
+#{entry.fields[:entryId]}
+</td>
+<td>
+#{entry.fields[:user]}
+</td>
+<td>
+#{entry.fields[:topic]}
+</td>
+</tr>"
 end
 
 def cowboy
@@ -108,4 +153,15 @@ end
 def create_entry(record)
   entry = cf_content_type.entries.create(record)
   entry.publish
+end
+
+def cda_client
+  Contentful::Client.new(
+                         access_token: ENV["CDA_TOKEN"],
+                         space: ENV["SPACE_KEY"]
+                        )
+end
+
+def entries
+  cda_client.entries(content_type: ENV["CONTENT_TYPE"])
 end
