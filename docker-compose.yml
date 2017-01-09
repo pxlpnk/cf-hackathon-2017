@@ -3,6 +3,10 @@ services:
   app:
     build:
       context: app
+    volumes:
+      - ./app:/app
+    ports:
+      - "8002:8002"
 
   fluent:
     build:
