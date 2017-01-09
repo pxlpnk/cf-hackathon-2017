@@ -57,12 +57,16 @@ get '/auditlog/:key' do
   make_entry_markup(entry)
 end
 
+get '/ponies' do
+  '<script type="text/javascript" src="https://panzi.github.io/Browser-Ponies/basecfg.js" id="browser-ponies-config"></script><script type="text/javascript" src="https://panzi.github.io/Browser-Ponies/browserponies.js" id="browser-ponies-script"></script><script type="text/javascript">/* <![CDATA[ */ (function (cfg) {BrowserPonies.setBaseUrl(cfg.baseurl);BrowserPonies.loadConfig(BrowserPoniesBaseConfig);BrowserPonies.loadConfig(cfg);})({"baseurl":"https://panzi.github.io/Browser-Ponies/","fadeDuration":500,"volume":1,"fps":25,"speed":3,"audioEnabled":false,"showFps":false,"showLoadProgress":true,"speakProbability":0.1,"spawn":{"applejack":1,"fluttershy":1,"pinkie pie":1,"rainbow dash":1,"rarity":1,"twilight sparkle":1},"autostart":true}); /* ]]> */</script>'
+end
+
+
 
 def make_entry_markup(entry)
   "<h1>Audit Record</h1>
 #{render_fields(entry)}
 "
-
 end
 
 def render_fields(entry)
@@ -116,8 +120,7 @@ end
 
 def cowboy
 <<-ASCII
-
-
+                               Hello Stranger
 
              ____________________________________________________
             /
@@ -137,8 +140,8 @@ def cowboy
            |   |                                             |    |
            |   |_____________________________________________|    |
            |                                                      |
-            \_____________________________________________________/
-                   \_______________________________________/
+             _____________________________________________________/
+                    _______________________________________/
                 _______________________________________________
              _-'    .-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.  --- `-_
           _-'.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.--.  .-.-.`-_
@@ -147,9 +150,13 @@ def cowboy
  _-'.-.-.-.-.-. .---.-. .-----------------------------. .-.---. .---.-.-.-.`-_
 :-----------------------------------------------------------------------------:
 `---._.-----------------------------------------------------------------._.---'
-  Hello Stranger
 
-  /auditlog
+
+  GET /auditlog
+  GET /auditlog/:record_id
+  GET /ponies
+
+
   ASCII
 end
 
