@@ -15,10 +15,29 @@ def fluent_port
   ENV["FLUENT_PORT"] || "24224"
 end
 
+require 'contentful/management'
+
+require 'dotenv'
+Dotenv.load
+
+def client
+  @client ||= Contentful::Management::Client.new(ENV["CMA_TOKEN"])
+end
+
+def space
+  @space ||= client.spaces.find(ENV["SPACE_KEY"])
+end
+
+def cf_content_type
+  @cf_content_type ||= space.content_types.find(ENV["CONTENT_TYPE"])
+end
+
 post '/webhooks' do
   body = parse_payload_body
   record = build_record(body)
   log_record(record)
+  create_entry(record)
+  'Cowboy!!'
 end
 
 get '/' do
@@ -62,8 +81,8 @@ def build_record(body)
    topic: request.env["HTTP_X_CONTENTFUL_TOPIC"],
    user: extract_user(body),
    version: body["sys"]["version"] || body["sys"]["revision"] || -1,
-   updated_at: body["sys"]["updatedAt"],
-   raw_payload: body.to_json
+   updatedAt: body["sys"]["updatedAt"],
+   # rawPayload: body.to_s
   }
 end
 
@@ -74,4 +93,8 @@ end
 def log_record(record)
   Fluent::Logger::FluentLogger.open(nil, :host=>fluent_host, :port=>fluent_port)
   Fluent::Logger.post(fluent_tag, record)
+end
+
+def create_entry(record)
+  entry = cf_content_type.entries.create(record)
 end
