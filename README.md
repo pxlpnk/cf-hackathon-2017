@@ -1,5 +1,5 @@
-Ordnungsamt - Simple Audit Logging for Contentful
--------------------------------------------------
+Ordnungsamt - Simple Audit Logging for Contentful with Contentful
+-----------------------------------------------------------------
 
 At Grumpy BOFH Inc we needed an audit log of who has been doing what with our precious content. The chosen solution was to configure webhooks on the Space where content is managed, and use this to populate a second restricted Space with a record of changes.
 
