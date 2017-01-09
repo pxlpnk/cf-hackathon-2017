@@ -1,7 +1,9 @@
 Ordnungsamt - Simple Audit Logging for Contentful with Contentful
 -----------------------------------------------------------------
 
-At Grumpy BOFH Inc we needed an audit log of who has been doing what with our precious content. The chosen solution was to configure webhooks on the Space where content is managed, and use this to populate a second restricted Space with a record of changes.
+At Grumpy BOFH Inc we needed an audit log of who has been doing what with our precious content. The chosen solution was to configure webhooks on the Space where content is managed, and use this to populate a second restricted Space with a record of changes. Our detailed design document is as follows:
+
+![](napkin.jpg)
 
 The webhooks are consumed by a Sinatra app, which massages the metadata from the webhook and spits it out to two destinations:
 
