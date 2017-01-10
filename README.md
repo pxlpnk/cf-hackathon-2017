@@ -16,3 +16,4 @@ Things we came up against:
 * Publish/Unpublish "createdAt" timestamps correspond to the moment of publishing / deletion from the public index, which is confusing
 * The README for contentful/contentful-management.rb is somewhat confusing, e.g. Content Types are described after Entries, in general it would be good to start with a minimal but complete example at the top to show how it works.
 * We tried storing the raw data from the webhook in a JSON field; this broke the Web App - it couldn't handle JSON inception. The APIs were fine with it though.
+* Fluentd has some fancy capabilities and is extensible with Ruby plugins - it should be feasible to write an `out_contentful` plugin to store events in Contentful directly in Fluentd, and use `in_http` with its built-in JSON parsing with `record-transformer` to process the webhooks
